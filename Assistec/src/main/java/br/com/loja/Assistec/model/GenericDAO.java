@@ -10,21 +10,22 @@ import br.com.loja.assistec.dal.ConexaoBD;
 //Esta classe facilita para que não precisemos em todas as Classes DAO executar todo este código, 
 //iremos apenas passar os parâmetros
 public abstract class GenericDAO {
-	private Connection connection;
+	private Connection conexao;
 
 	// Protected pois pertencem a esta classe, somente podem ser usadas por classes
 	// que herdam desta
 	protected GenericDAO() {
-		this.connection = ConexaoBD.getConnection();
+		this.conexao = ConexaoBD.conectar();
 	}
 
-	protected Connection getConnection() {
-		return connection;
+	//Método que retorna a conexaao
+	protected Connection conectarDAO() {
+		return conexao;
 	}
 
 	// Método para salvar
 	protected void save(String insertSql, Object... parametros) throws SQLException {
-		PreparedStatement pstmt = getConnection().prepareStatement(insertSql);
+		PreparedStatement pstmt = conectarDAO().prepareStatement(insertSql);
 
 		for (int i = 0; i < parametros.length; i++) {
 			pstmt.setObject(i + 1, parametros[i]);
@@ -32,24 +33,24 @@ public abstract class GenericDAO {
 
 		pstmt.execute();
 		pstmt.close();
-		connection.close();
+		conexao.close();
 	}
 
 	// Método para atualizar
 	protected void update(String updateSql, Object id, Object... parametros) throws SQLException {
-		PreparedStatement pstmt = getConnection().prepareStatement(updateSql);
+		PreparedStatement pstmt = conectarDAO().prepareStatement(updateSql);
 		for (int i = 0; i < parametros.length; i++) {
 			pstmt.setObject(i + 1, parametros[i]);
 		}
 		pstmt.setObject(parametros.length + 1, id);
 		pstmt.execute();
 		pstmt.close();
-		connection.close();
+		conexao.close();
 	}
 
 	// Método para deletar
 	protected void delete(String deleteSql, Object... parametros) throws SQLException {
-		PreparedStatement pstmt = getConnection().prepareStatement(deleteSql);
+		PreparedStatement pstmt = conectarDAO().prepareStatement(deleteSql);
 
 		for (int i = 0; i < parametros.length; i++) {
 			pstmt.setObject(i + 1, parametros[i]);
@@ -57,6 +58,6 @@ public abstract class GenericDAO {
 
 		pstmt.execute();
 		pstmt.close();
-		connection.close();
+		conexao.close();
 	}
 }

@@ -1,20 +1,12 @@
 package br.com.loja.assistec.model;
 
 public class Usuario {
+	private long iduser;
 	private String nome;
-    private String fone;
-    private String login;
-    private String senha;
-    private String perfil;
-    private Long iduser;
-
-	public Long getIduser() {
-		return iduser;
-	}
-
-	public void setIduser(Long iduser) {
-		this.iduser = iduser;
-	}
+	private String fone;
+	private String login;
+	private String senha;
+	private String perfil;
 
 	public Usuario(String nome, String fone, String login, String senha, String perfil) {
 		this.nome = nome;
@@ -24,19 +16,23 @@ public class Usuario {
 		this.perfil = perfil;
 	}
 
+	public long getIduser() {
+		return iduser;
+	}
+
+	public void setIduser(long iduser) {
+		this.iduser = iduser;
+	}
+
 	public Usuario(String login, String senha, String perfil) {
 		this.login = login;
 		this.senha = senha;
 		this.perfil = perfil;
 	}
-	
+
 	public Usuario() {
-		
+
 	}
-
-
-
-	
 
 	public String getNome() {
 		return nome;
@@ -78,7 +74,4 @@ public class Usuario {
 		this.perfil = perfil;
 	}
 
-
-
 }
-

@@ -1,28 +1,24 @@
 package br.com.loja.assistec.view;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.GroupLayout;
-import javax.swing.ImageIcon;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.LayoutStyle.ComponentPlacement;
 
 import br.com.loja.assistec.controller.LoginController;
 
-import javax.swing.JPasswordField;
-import javax.swing.JButton;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class LoginView extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	public JTextField txtUsuario;
-	public JPasswordField txtSenha;
-	public JButton btnLogin;
-	public JLabel lblStatus;
-	private JLabel lblUsuario;
+	private JTextField txtLogin;
+	private JPasswordField txtSenha;
+	private JButton btnLogin;
+	private JLabel lblStatus;
+	private JLabel lblLogin;
 	private JLabel lblSenha;
 
 	public LoginView() {
@@ -30,65 +26,51 @@ public class LoginView extends JFrame {
 			@Override
 			public void windowOpened(WindowEvent e) {
 				LoginController lc = new LoginController();
-				if (lc.verificarBancoOnline()){
-			            lblStatus.setIcon(new ImageIcon(getClass().getResource("/br/com/loja/assistec/icones/dbok.png")));
-			        } else{
-
-			            lblStatus.setIcon(new ImageIcon(getClass().getResource("/br/com/loja/assistec/icones/dberror.png")));
-			        }
+				if (lc.verificarBancoOnline()) {
+					lblStatus.setIcon(new javax.swing.ImageIcon(
+							getClass().getResource("/br/com/loja/assistec/icones/dbok.png")));
+				} else {
+					lblStatus.setIcon(new javax.swing.ImageIcon(
+							getClass().getResource("/br/com/loja/assistec/icones/dberror.png")));
+				}
 			}
 		});
-		initComponents();
-	}
-
-	public void initComponents() {
-		lblUsuario = new JLabel();
-		lblSenha = new JLabel();
-		txtUsuario = new JTextField();
-		txtSenha = new JPasswordField();
-		btnLogin = new JButton();
-		lblStatus = new JLabel();
-
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
-		setTitle("CRUD - LOGIN");
-		setResizable(false);
-		getRootPane().setDefaultButton(btnLogin);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("ASSISTEC - LOGIN");
 
-		lblUsuario.setText("Usuário");
+		// Inicializa todos elementos gráficos
 
+		lblLogin = new JLabel();
+		lblLogin.setBounds(102, 63, 53, 14);
+		lblSenha = new JLabel();
+		lblSenha.setBounds(102, 102, 64, 14);
+		txtLogin = new JTextField();
+		txtLogin.setBounds(176, 60, 127, 20);
+		txtSenha = new JPasswordField();
+		txtSenha.setBounds(176, 98, 128, 22);
+		btnLogin = new JButton();
+
+		btnLogin.setBounds(179, 155, 76, 23);
+
+		lblStatus = new JLabel();
+		lblStatus.setBounds(10, 213, 63, 37);
+
+		lblLogin.setText("Login");
 		lblSenha.setText("Senha");
+		btnLogin.setText("Entrar");
 
-		btnLogin.setText("Login");
+		getRootPane().setDefaultButton(btnLogin);
+		getContentPane().setLayout(null);
+		getContentPane().add(lblStatus);
+		getContentPane().add(btnLogin);
+		getContentPane().add(lblSenha);
+		getContentPane().add(lblLogin);
+		getContentPane().add(txtSenha);
+		getContentPane().add(txtLogin);
 
-		GroupLayout groupLayout = new GroupLayout(getContentPane());
-		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGroup(groupLayout
-				.createSequentialGroup()
-				.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(groupLayout.createSequentialGroup().addGap(37).addComponent(lblStatus))
-						.addGroup(groupLayout.createSequentialGroup().addGap(189).addComponent(btnLogin))
-						.addGroup(groupLayout.createSequentialGroup().addGap(130)
-								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addComponent(lblSenha, GroupLayout.PREFERRED_SIZE, 36,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(lblUsuario))
-								.addPreferredGap(ComponentPlacement.UNRELATED)
-								.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-										.addComponent(txtSenha, GroupLayout.PREFERRED_SIZE, 128,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(txtUsuario, GroupLayout.PREFERRED_SIZE, 127,
-												GroupLayout.PREFERRED_SIZE))))
-				.addContainerGap(180, Short.MAX_VALUE)));
-		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.TRAILING).addGroup(groupLayout
-				.createSequentialGroup().addContainerGap(60, Short.MAX_VALUE)
-				.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE).addComponent(lblUsuario).addComponent(
-						txtUsuario, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-				.addGap(18)
-				.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE).addComponent(lblSenha)
-						.addComponent(txtSenha, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE))
-				.addGap(35).addComponent(btnLogin).addGap(22).addComponent(lblStatus).addGap(61)));
-		getContentPane().setLayout(groupLayout);
-		pack();
-		setLocationRelativeTo(null);
 	}
+
+
+
 }
