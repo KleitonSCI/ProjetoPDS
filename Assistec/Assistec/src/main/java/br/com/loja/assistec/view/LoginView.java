@@ -1,5 +1,12 @@
 package br.com.loja.assistec.view;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -8,13 +15,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import br.com.loja.assistec.controller.LoginController;
-
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class LoginView extends JFrame {
 
@@ -32,8 +32,8 @@ public class LoginView extends JFrame {
 			public void windowOpened(WindowEvent e) {
 				LoginController lc = new LoginController();
 				if (lc.verificarBancoOnline()) {
-					lblStatus.setIcon(
-							new javax.swing.ImageIcon(getClass().getResource("/br/com/loja/assistec/icones/dbok.png")));
+					lblStatus.setIcon(new javax.swing.ImageIcon(
+							getClass().getResource("/br/com/loja/assistec/icones/dbok.png")));
 				} else {
 					lblStatus.setIcon(new javax.swing.ImageIcon(
 							getClass().getResource("/br/com/loja/assistec/icones/dberror.png")));
@@ -86,36 +86,48 @@ public class LoginView extends JFrame {
 
 	}
 
+	//Método para clicar no botao e acionar o método autenticar()
 	protected void onClickBtnLogin() throws SQLException{
-		// TODO Auto-generated method stub
 		ArrayList<String> autenticado = new ArrayList<>();
-		if (txtLogin.getText() != null && !txtLogin.getText().isEmpty()
-				&& String.valueOf(txtSenha.getPassword()) != null
-				&& !String.valueOf(txtSenha.getPassword()).isEmpty()) {
+		
+		//Pré-validação
+		if(txtLogin.getText() != null &&
+				!txtLogin.getText().isEmpty() &&
+				String.valueOf(txtSenha.getPassword()) != null &&
+				!String.valueOf(txtSenha.getPassword()).isEmpty()) {
 			LoginController lc = new LoginController();
+			//Chamar o método autenticar e passar os parametros
 			try {
-				autenticado = lc.autenticar(txtLogin.getText(), String.valueOf(txtSenha.getPassword()));
-				if(autenticado.get(0)!=null) {
-					JOptionPane.showMessageDialog(this, "Bem vindo " + autenticado.get(0),"Acesso Liberado",JOptionPane.INFORMATION_MESSAGE);
+				autenticado = lc.autenticar(txtLogin.getText(), 
+						new String(txtSenha.getPassword()));
+				if(autenticado.get(0) != null) {
+					JOptionPane.showMessageDialog(this, 
+							"Bem vindo " + autenticado.get(0)+
+							" acesso liberado!", "Atenção",
+							JOptionPane.INFORMATION_MESSAGE
+							);
 					this.dispose();
-					PrincipalView tela = new PrincipalView(autenticado.get(0),autenticado.get(1) );
-					tela.setLocationRelativeTo(null);
-					tela.setVisible(true);
-				}
-				
+					PrincipalView telaPrincipal = 
+							new PrincipalView(autenticado.get(0),
+									autenticado.get(1));
+					telaPrincipal.setLocationRelativeTo(telaPrincipal);
+					telaPrincipal.setVisible(true);
 					
-				
-				
-				
+				}
 			} catch (NullPointerException e) {
-				// TODO Auto-generated catch block
-				JOptionPane.showMessageDialog(this, "Usuário e/ou senha não encontrados","Aviso",JOptionPane.WARNING_MESSAGE);
-				e.printStackTrace();
-			}
+				JOptionPane.showMessageDialog(btnLogin, 
+						"Usuário ou senha inválidos!",
+						"Atenção", JOptionPane.WARNING_MESSAGE);
+			} 
+			
+		}else {
+			JOptionPane.showMessageDialog(btnLogin, 
+					"Verifique as informações",
+					"Aviso", JOptionPane.WARNING_MESSAGE);
 		}
-		else {
-			JOptionPane.showMessageDialog(this,"Dados Inválidos","Aviso",JOptionPane.WARNING_MESSAGE);
-		}
+		
 	}
+
+
 
 }
