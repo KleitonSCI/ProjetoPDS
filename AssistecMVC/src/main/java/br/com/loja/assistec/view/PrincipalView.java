@@ -121,9 +121,9 @@ public class PrincipalView extends javax.swing.JFrame {
 //	}
 
 	// Exibe informações sobre o sistema
-	/*public void mostrarSobre() {
-		JOptionPane.showMessageDialog(this, "Sistema de Gestão Assistec - Versão 1.0");
-	}*/
+//	public void mostrarSobre() {
+//		JOptionPane.showMessageDialog(this, "Sistema de Gestão Assistec - Versão 1.0");
+//	}
 
 	// Personaliza a interface conforme o perfil do usuário
 	public void configurarPerfilUsuario(String login, ArrayList<String> permissoes) {
