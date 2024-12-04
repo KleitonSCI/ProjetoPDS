@@ -33,10 +33,10 @@ public class CadastrarUsuariosView extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setBounds(100, 100, 450, 300);
         setLocationRelativeTo(null);
-        initComponents();
+        initComponents(usuarioSelecionado);
     }
 
-    private void initComponents() {
+    private void initComponents(Usuario usuarioselecionado) {
         JPanel contentPane = new JPanel(new BorderLayout());
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
@@ -47,8 +47,11 @@ public class CadastrarUsuariosView extends JFrame {
 
         JPanel panelCampos = new JPanel(new GridLayout(6, 2));
         txtNome = new JTextField(20);
+       
         txtFone = new JTextField(20);
+        
         txtLogin = new JTextField(20);
+      
         txtSenha = new JPasswordField(20);
         cbPerfil = new JComboBox<>(new String[]{"User", "Admin"});
 
@@ -65,7 +68,7 @@ public class CadastrarUsuariosView extends JFrame {
         contentPane.add(panelCampos, BorderLayout.CENTER);
 
         JPanel panelBotoes = new JPanel();
-        btnIncluir = new JButton("Incluir");
+        btnIncluir = new JButton(usuarioselecionado==null ? "Incluir" : "Alterar");
         btnIncluir.setActionCommand("BotaoIncluirAction");
         btnExcluir = new JButton("Excluir");
         btnExcluir.setActionCommand("BotaoExcluirAction");
@@ -85,6 +88,7 @@ public class CadastrarUsuariosView extends JFrame {
     	btnExcluir.addActionListener(listener);
     	btnFechar.addActionListener(listener);
     }
+
     public void preencherCampos(Usuario usuarioSelecionado) {
         txtNome.setText(usuarioSelecionado.getNome());
         txtFone.setText(usuarioSelecionado.getFone());
@@ -117,6 +121,19 @@ public class CadastrarUsuariosView extends JFrame {
     public String getFone() {
         return txtFone.getText();
     }
+
+	public void habilitarBotaoExcluir(boolean b) {
+		// TODO Auto-generated method stub
+		btnExcluir.setVisible(b);
+		
+	}
+
+	public Object getPerfilSelecionado() {
+		// TODO Auto-generated method stub
+		return cbPerfil.getSelectedItem();
+		
+	}
+	
 
 
 

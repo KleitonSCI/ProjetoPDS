@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import br.com.loja.assistec.model.Usuario;
 import br.com.loja.assistec.model.UsuarioDAO;
 import br.com.loja.assistec.view.ListarUsuariosView;
+import br.com.loja.assistec.view.MensagemView;
 
 public class ListarUsuarioController {
 	private ListarUsuariosView listarView;
@@ -27,28 +28,50 @@ public class ListarUsuarioController {
 	public void configurarListeners() {
 		listarView.addListarUsuariosListener(new ListarUsuariosListener());
 		listarView.addWindowListener(new JanelaAberturaListener());
-		listarView.addMouseListener(new TabelaMouseClickListener());
+		listarView.addTabelaMouseListener(new TabelaMouseClickListener());
 	}
 
 	public void carregarUsuarios() throws SQLException {
+		try {
 		ArrayList<Usuario> listaUsuarios = listarUsuarios();
 		if(!listaUsuarios.isEmpty()) {
 			listarView.mostrarUsuariosTabela(listaUsuarios);
 		}
+	} catch (SQLException e) {
+		new MensagemView("Erro ao carregar usuários!",0);
+	}
 	}
 	
 	public ArrayList<Usuario> listarUsuarios() throws SQLException{
 		UsuarioDAO dao = new UsuarioDAO();
 		return dao.selecionarUsuarios();
 	}
-	
+	private Usuario buscarUsuarioPorID(Long id) throws SQLException {
+		UsuarioDAO dao = new UsuarioDAO();
+		return dao.selecionarUsuario(id);
+	}
+	//Classe que trata o evento do clique na tabela
 	private class TabelaMouseClickListener extends MouseAdapter{
-		public void mouseClicado(MouseEvent e) {
-			if(e.getButton()==MouseEvent.BUTTON1) {
-				System.out.println("clicaram");
+		
+		public void mouseClicked(MouseEvent e) {
+			if (e.getButton() == MouseEvent.BUTTON1) {
+				//Selecionar o usuario
+				int linha = listarView.getLinhaSelecionada();
+				Long iduser = (Long) listarView.getValorLinhaColuna(linha,0);
+				try {
+					Usuario usuarioselecionado = buscarUsuarioPorID(iduser);
+					abrirCadastroUsuario(usuarioselecionado);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					new MensagemView("Erro ao buscar usuario",0);
+				}
+				
+				
 			}
 		}
 	}
+	
+	//Classe que trata os eventos de botao
 	private class ListarUsuariosListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -76,9 +99,14 @@ public class ListarUsuarioController {
 			try {
 				carregarUsuarios();
 			} catch (SQLException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}
+	}
+
+	public void atualizarTabela(ArrayList<Usuario> novosUsuarios) {
+		// TODO Auto-generated method stub
+		listarView.atualizarTabelaUsuarios(novosUsuarios);
+		
 	}
 }

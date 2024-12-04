@@ -87,7 +87,7 @@ public class PrincipalController {
 	// Exibe a tela "Sobre" do sistema
 	private void mostrarInformacoesSobre() {
 //		principalView.mostrarSobre();
-		new MensagemView("'Doce de leite'~SCHWARTZ, Fábio", 10);
+		new MensagemView("Sistema de Gestão Assistec", 10);
 	}
 
 	// Configura o perfil do usuário e ajusta permissões no menu
