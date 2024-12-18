@@ -2,6 +2,8 @@ package br.com.loja.assistec.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -29,7 +31,16 @@ public class ListarUsuarioController {
 		listarView.addListarUsuariosListener(new ListarUsuariosListener());
 		listarView.addWindowListener(new JanelaAberturaListener());
 		listarView.addTabelaMouseListener(new TabelaMouseClickListener());
+		listarView.addBuscarKeyListener(new BuscarKeyListener());
 	}
+		public class BuscarKeyListener extends KeyAdapter{
+			
+			public void keyPressed(KeyEvent e) {
+				listarView.filtrarRegistros();
+			}
+		
+		}
+		
 
 	public void carregarUsuarios() throws SQLException {
 		try {
@@ -46,10 +57,12 @@ public class ListarUsuarioController {
 		UsuarioDAO dao = new UsuarioDAO();
 		return dao.selecionarUsuarios();
 	}
-	private Usuario buscarUsuarioPorID(Long id) throws SQLException {
+	
+	private Usuario buscarUsuarioPorID(Long iduser) throws SQLException {
 		UsuarioDAO dao = new UsuarioDAO();
-		return dao.selecionarUsuario(id);
+		return dao.selecionarUsuario(iduser);
 	}
+	
 	//Classe que trata o evento do clique na tabela
 	private class TabelaMouseClickListener extends MouseAdapter{
 		
@@ -57,15 +70,13 @@ public class ListarUsuarioController {
 			if (e.getButton() == MouseEvent.BUTTON1) {
 				//Selecionar o usuario
 				int linha = listarView.getLinhaSelecionada();
-				Long iduser = (Long) listarView.getValorLinhaColuna(linha,0);
+				Long iduser = (Long) listarView.getValorLinhaColuna(linha, 0);
 				try {
-					Usuario usuarioselecionado = buscarUsuarioPorID(iduser);
-					abrirCadastroUsuario(usuarioselecionado);
+					Usuario usuarioSelecionado = buscarUsuarioPorID(iduser);
+					abrirCadastroUsuario(usuarioSelecionado);
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					new MensagemView("Erro ao buscar usuario",0);
+					new MensagemView("Erro ao buscar usuário!",0);
 				}
-				
 				
 			}
 		}
@@ -105,8 +116,6 @@ public class ListarUsuarioController {
 	}
 
 	public void atualizarTabela(ArrayList<Usuario> novosUsuarios) {
-		// TODO Auto-generated method stub
 		listarView.atualizarTabelaUsuarios(novosUsuarios);
-		
 	}
 }

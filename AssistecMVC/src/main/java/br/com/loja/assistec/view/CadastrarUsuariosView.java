@@ -36,7 +36,7 @@ public class CadastrarUsuariosView extends JFrame {
         initComponents(usuarioSelecionado);
     }
 
-    private void initComponents(Usuario usuarioselecionado) {
+    private void initComponents(Usuario usuarioSelecionado) {
         JPanel contentPane = new JPanel(new BorderLayout());
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
@@ -47,11 +47,8 @@ public class CadastrarUsuariosView extends JFrame {
 
         JPanel panelCampos = new JPanel(new GridLayout(6, 2));
         txtNome = new JTextField(20);
-       
         txtFone = new JTextField(20);
-        
         txtLogin = new JTextField(20);
-      
         txtSenha = new JPasswordField(20);
         cbPerfil = new JComboBox<>(new String[]{"User", "Admin"});
 
@@ -68,7 +65,8 @@ public class CadastrarUsuariosView extends JFrame {
         contentPane.add(panelCampos, BorderLayout.CENTER);
 
         JPanel panelBotoes = new JPanel();
-        btnIncluir = new JButton(usuarioselecionado==null ? "Incluir" : "Alterar");
+        btnIncluir = new JButton(usuarioSelecionado == null 
+        		? "Incluir" : "Alterar");
         btnIncluir.setActionCommand("BotaoIncluirAction");
         btnExcluir = new JButton("Excluir");
         btnExcluir.setActionCommand("BotaoExcluirAction");
@@ -123,18 +121,13 @@ public class CadastrarUsuariosView extends JFrame {
     }
 
 	public void habilitarBotaoExcluir(boolean b) {
-		// TODO Auto-generated method stub
 		btnExcluir.setVisible(b);
-		
 	}
 
 	public Object getPerfilSelecionado() {
-		// TODO Auto-generated method stub
 		return cbPerfil.getSelectedItem();
-		
 	}
 	
-
 
 
 

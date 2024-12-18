@@ -30,9 +30,11 @@ public class CadastrarUsuarioController {
 
 	private void configurarListeners() {
 		cadastrarView.addCadastrarUsuariosListener(new CadastrarUsuariosListener());
+		
 		cadastrarView.addWindowListener(new WindowAdapter(){
+			
 			public void windowOpened(WindowEvent e) {
-				if(usuarioSelecionado!=null) {
+				if(usuarioSelecionado != null) {
 					cadastrarView.preencherCampos(usuarioSelecionado);
 					cadastrarView.habilitarBotaoExcluir(true);
 				}
@@ -55,7 +57,6 @@ public class CadastrarUsuarioController {
 				try {
 					NovoOuAlterar();
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				break;
@@ -66,58 +67,57 @@ public class CadastrarUsuarioController {
 		
 	}
 	
-	
-	private void AtualizarListaUsuarios() throws SQLException {
-		ArrayList<Usuario> novosUsuarios = listarController.listarUsuarios();
-		listarController.atualizarTabela(novosUsuarios);
-		
-	}
-	
-	private void Excluir() {
-		MensagemView mv = new MensagemView("Tem certeza que quer excluir?");
-		int confirmacao = mv.getResposta();
-		if(confirmacao==1) {
-			try {
-				excluir(usuarioSelecionado.getIduser());
-				cadastrarView.dispose();
-				AtualizarListaUsuarios();
-				
-				new MensagemView("Usuario excluído com sucesso",3);
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				new MensagemView("Erro ao excluir usuario",0);
-			}
-		}
-	}
-	private void excluir(long idUser) throws SQLException {
-		new UsuarioDAO().excluir(idUser);
-	}
-	
 	private void NovoOuAlterar() throws SQLException {
 		String perfil = (String) cadastrarView.getPerfilSelecionado();
-		if(usuarioSelecionado==null) {
-			incluir(cadastrarView.getNome(),cadastrarView.getFone(),cadastrarView.getLogin(),cadastrarView.getSenha(),perfil);
-			new MensagemView("Registro inserido com sucesso",3);
-			cadastrarView.dispose();
-			AtualizarListaUsuarios();
+		if (usuarioSelecionado == null) {
+			incluir(cadastrarView.getNome(), cadastrarView.getFone(),
+					cadastrarView.getLogin(), cadastrarView.getSenha(), 
+					perfil);
+			new MensagemView("Registro inserido com sucesso!",3);
+		} else {
+			alterar(usuarioSelecionado.getIduser(), cadastrarView.getNome(), cadastrarView.getFone(),
+					cadastrarView.getLogin(), cadastrarView.getSenha(), 
+					perfil);
+			new MensagemView("Registro alterado com sucesso!",3);
 		}
-		else {
-			alterar(usuarioSelecionado.getIduser(),cadastrarView.getNome(),cadastrarView.getFone(),cadastrarView.getLogin(),cadastrarView.getSenha(),perfil);
-			cadastrarView.dispose();
-			AtualizarListaUsuarios();
-		}
+		cadastrarView.dispose();
+		atualizarListaUsuarios();
 	}
 	
 	private void alterar(long iduser, String nome, String fone, String login, String senha, String perfil) throws SQLException {
-		// TODO Auto-generated method stub
-		Usuario usuario = new Usuario(iduser, nome,fone,login,senha,perfil);
+		Usuario usuario = new Usuario(iduser, nome, fone, 
+				login, senha, perfil);
 		new UsuarioDAO().alterar(usuario);
 	}
 
-	private void incluir(String nome,String fone,String login,String senha,String perfil) throws SQLException {
-		Usuario usuario = new Usuario(nome,fone,login,senha,perfil);
+	private void incluir(String nome, String fone, String login, String senha, String perfil) throws SQLException {
+		Usuario usuario = new Usuario(nome, fone, login, senha, perfil);
 		new UsuarioDAO().salvar(usuario);
 	}
 
+	private void Excluir()  {
+		MensagemView mv = new MensagemView("Tem certeza que quer excluir?");
+		int confirmacao = mv.getResposta();
+		if (confirmacao == 1) {
+			try{
+				excluir(usuarioSelecionado.getIduser());
+				cadastrarView.dispose();
+				atualizarListaUsuarios();
+				new MensagemView("Usuário excluído com sucesso!", 3);
+			}catch(SQLException e) {
+				new MensagemView("Erro ao excluir usuário!", 0);
+			}
+		}
+	}
+
+	private void atualizarListaUsuarios() throws SQLException {
+		ArrayList<Usuario> novosUsuarios = 
+				listarController.listarUsuarios();
+		listarController.atualizarTabela(novosUsuarios);
+	}
+
+	private void excluir(long iduser) throws SQLException {
+		new UsuarioDAO().excluir(iduser);
+	}
 
 }
